@@ -1,14 +1,26 @@
-name: Supabase Keep Alive
+name: Fetch To Keep Alive
 
 on:
+  workflow_dispatch: {}
   schedule:
-    - cron: "0 6 * * *"  # Runs every day at 06:00 UTC
-  workflow_dispatch: {}  # Allow manual run
+    - cron: "0 6 * * *"
 
 jobs:
-  ping:
+  fetch:
     runs-on: ubuntu-latest
-    steps:
-      - name: Curl Supabase
-        run: curl -s "https://${{ secrets.SUPABASE_URL }}/health" || echo "Ping failed"
 
+    steps:
+      - name: Fetch table from Supabase
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+          SUPABASE_TABLE: ${{ secrets.SUPABASE_TABLE }}
+        run: |
+          set -euo pipefail
+
+          RESPONSE=$(curl -s \
+            -H "apikey: $SUPABASE_ANON_KEY" \
+            -H "Authorization: Bearer $SUPABASE_ANON_KEY" \
+            "$SUPABASE_URL/rest/v1/$SUPABASE_TABLE?select=*")
+
+          echo "$RESPONSE"
