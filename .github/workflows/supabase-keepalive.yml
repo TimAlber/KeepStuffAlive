@@ -1,26 +1,26 @@
-# name: Fetch To Keep Alive
+name: Fetch To Keep Alive
 
-# on:
-#   workflow_dispatch: {}
-#   schedule:
-#     - cron: "0 6 * * *"
+on:
+  workflow_dispatch: {}
+  schedule:
+    - cron: "0 6 * * *"
 
-# jobs:
-#   fetch:
-#     runs-on: ubuntu-latest
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
 
-#     steps:
-#       - name: Fetch table from Supabase
-#         env:
-#           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-#           SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
-#           SUPABASE_TABLE: ${{ secrets.SUPABASE_TABLE }}
-#         run: |
-#           set -euo pipefail
+    steps:
+      - name: Fetch table from Supabase
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+          SUPABASE_TABLE: ${{ secrets.SUPABASE_TABLE }}
+        run: |
+          set -euo pipefail
 
-#           RESPONSE=$(curl -s \
-#             -H "apikey: $SUPABASE_ANON_KEY" \
-#             -H "Authorization: Bearer $SUPABASE_ANON_KEY" \
-#             "$SUPABASE_URL/rest/v1/$SUPABASE_TABLE?select=*")
+          RESPONSE=$(curl -s \
+            -H "apikey: $SUPABASE_ANON_KEY" \
+            -H "Authorization: Bearer $SUPABASE_ANON_KEY" \
+            "$SUPABASE_URL/rest/v1/$SUPABASE_TABLE?select=*")
 
-#           echo "$RESPONSE"
+          echo "$RESPONSE"
